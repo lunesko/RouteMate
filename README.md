@@ -42,6 +42,7 @@ npm run package
 ```
 
 The Chrome Web Store upload archive and a complete source archive are created under `dist/`.
+The packager is implemented in Node.js and does not require external `zip`, `unzip`, or Bash tools.
 
 ## Product direction
 

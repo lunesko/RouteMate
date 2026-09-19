@@ -10,35 +10,35 @@ Turn Google Maps places into private field-day plans with visit windows, job det
 
 ## Detailed description
 
-Turn places you open in Google Maps into an organized field-work plan without copying every address by hand.
+RouteMate turns places you open in Google Maps into a structured field-day plan for technicians, inspectors, service professionals, sales representatives, and anyone who visits multiple locations.
 
-RouteMate lets you:
+Save the currently selected place without copying its address by hand, organize visits, and open the finished route in Google Maps when you are ready to travel.
 
-- maintain multiple named routes;
-- save the currently selected map location;
-- track pending/completed status, priority, visit duration, and private notes;
-- set a work date, day start, travel buffer, and customer visit windows;
-- see planned visit times, projected finish, progress, and schedule conflicts;
-- keep task type and contact details beside each stop;
-- start or complete the next visit in one click;
-- duplicate recurring routes while resetting their execution status;
-- reorder stops with drag-and-drop or controls;
-- optimize pending work locally while keeping the final stop fixed when needed;
-- choose driving, walking, cycling, or transit;
-- open long plans as connected Google Maps route sections;
-- import/export CSV and back up or restore the complete workspace as JSON.
+Key features:
 
-RouteMate is free and open source. There are no accounts, ads, subscriptions, or paid features.
+- Save the place currently open in Google Maps.
+- Maintain up to 20 named routes with up to 50 stops each.
+- Add visit status, priority, service duration, time windows, task type, contact details, and private notes.
+- See the next visit, completion progress, projected finish time, and local schedule-conflict warnings.
+- Reorder visits manually, by drag and drop, reverse pending work, or run local route optimization.
+- Keep the first and final stops fixed when needed.
+- Duplicate recurring routes while resetting their completion status.
+- Skip finished visits when opening navigation.
+- Import and export CSV files.
+- Back up and restore the complete workspace as JSON.
+- Open long plans as connected Google Maps route sections.
 
-Privacy first: route data stays in the browser profile. RouteMate does not collect or sell browsing history, locations, routes, or notes.
+Privacy by design:
+Route data, customer details, and notes stay in Chrome storage on the user's device. RouteMate has no account, ads, analytics, subscription, or external backend.
 
-The optimizer uses straight-line distance and is not a traffic or navigation service. Always review the final route in Google Maps before travel.
+Important:
+RouteMate's optimizer uses approximate straight-line distance. Schedule forecasts use the travel buffer entered by the user and are not live traffic ETAs. Always review the route in Google Maps before travelling.
 
-RouteMate is an independent product. It is not affiliated with, endorsed by, or sponsored by Google.
+RouteMate is free and open source. It is an independent product and is not affiliated with, endorsed by, or sponsored by Google.
 
 ## Category
 
-Productivity
+Workflow & Planning
 
 ## Suggested screenshot captions
 
@@ -54,6 +54,6 @@ RouteMate turns locations deliberately selected by the user in Google Maps into 
 
 ## Permission justifications
 
-- `storage`: saves stops, notes, and settings locally.
-- `sidePanel`: displays the route planner beside Google Maps.
-- Google Maps host access: reads only the currently open place after the user presses Add stop.
+- `storage`: Used to save routes, visit details, statuses, notes, and settings locally in the user's Chrome profile. No route data is sent to the developer or to an external server.
+- `sidePanel`: Used to display RouteMate's route workspace beside Google Maps while the user plans and manages visits.
+- Google Maps host access: Used only to read the currently open Google Maps place after the user explicitly clicks Add stop. RouteMate does not scan search results or collect browsing activity in the background.

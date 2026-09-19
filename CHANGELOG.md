@@ -9,6 +9,9 @@
 - Added route duplication for recurring work; visit details are retained while execution state is reset.
 - Extended CSV import/export and JSON normalization for the new operational fields.
 - Migrated local workspaces to schema v3 without losing v0.3 data.
+- Added cross-platform Node.js packaging with built-in ZIP integrity checks.
+- Added extension smoke tests for manifest resources, side-panel DOM wiring, unsafe runtime patterns, and packaging setup.
+- Added the complete Chrome Web Store registration kit and promotional assets to the source repository.
 
 ## 0.3.0
 
