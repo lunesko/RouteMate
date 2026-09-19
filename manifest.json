@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "RouteMate: Multi-stop Planner",
+  "description": "Turn Google Maps places into a private field-day plan with visit windows, job details, statuses, and local optimization.",
+  "version": "0.4.0",
+  "minimum_chrome_version": "114",
+  "permissions": ["storage", "sidePanel"],
+  "host_permissions": [
+    "https://www.google.com/maps/*",
+    "https://maps.google.com/*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open RouteMate",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel/index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/maps/*",
+        "https://maps.google.com/*"
+      ],
+      "js": ["content/maps-capture.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  }
+}

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RouteMate</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-mark" aria-hidden="true">R</div>
+    <div>
+      <h1>RouteMate</h1>
+      <p>Routes for real work</p>
+    </div>
+    <span id="planBadge" class="plan-badge">LOCAL</span>
+  </header>
+
+  <main>
+    <section class="route-library" aria-labelledby="routeLibraryTitle">
+      <div class="section-heading">
+        <h2 id="routeLibraryTitle">Route workspace</h2>
+        <span id="routeCount" class="quiet-label">1 / 20</span>
+      </div>
+      <div class="route-picker">
+        <select id="routeSelect" aria-label="Active route"></select>
+        <button id="newRouteButton" class="icon-button strong" title="New route" aria-label="Create route">＋</button>
+        <button id="duplicateRouteButton" class="icon-button" title="Duplicate as reusable route" aria-label="Duplicate route">⧉</button>
+        <button id="renameRouteButton" class="icon-button" title="Rename route" aria-label="Rename route">✎</button>
+        <button id="deleteRouteButton" class="icon-button danger" title="Delete route" aria-label="Delete route">×</button>
+      </div>
+    </section>
+
+    <section class="capture-card" aria-labelledby="captureTitle">
+      <div>
+        <h2 id="captureTitle">Save the open place</h2>
+        <p>Select a place in Google Maps, then add it to this route.</p>
+      </div>
+      <button id="captureButton" class="primary-button" type="button">＋ Add stop</button>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+    <section class="route-settings" aria-label="Route settings">
+      <label>
+        Travel mode
+        <select id="travelMode">
+          <option value="driving">Driving</option>
+          <option value="walking">Walking</option>
+          <option value="bicycling">Bicycling</option>
+          <option value="transit">Transit</option>
+        </select>
+      </label>
+      <label>
+        Work date
+        <input id="scheduledDate" type="date">
+      </label>
+      <label>
+        Day starts
+        <input id="startTime" type="time" value="08:00">
+      </label>
+      <label>
+        Per-leg buffer, min
+        <input id="travelBufferMinutes" type="number" min="0" max="240" step="5" inputmode="numeric">
+      </label>
+      <label class="check-setting"><input id="keepLastFixed" type="checkbox"> Keep final stop fixed</label>
+      <label class="check-setting"><input id="skipCompleted" type="checkbox"> Skip finished visits</label>
+    </section>
+
+    <section class="route-summary" aria-label="Route summary">
+      <div><strong id="summaryRemaining">0</strong><span>remaining</span></div>
+      <div><strong id="summaryDistance">0 km</strong><span>straight-line</span></div>
+      <div><strong id="summaryService">0 min</strong><span>service time</span></div>
+      <div><strong id="summaryFinish">—</strong><span>planned finish</span></div>
+    </section>
+
+    <section class="day-progress" aria-label="Field day progress">
+      <div class="progress-copy"><span id="progressLabel">0 of 0 complete</span><span id="scheduleIssueLabel">No schedule conflicts</span></div>
+      <div class="progress-track"><span id="progressBar"></span></div>
+    </section>
+
+    <section id="nextVisitCard" class="next-visit" aria-labelledby="nextVisitTitle" hidden>
+      <div class="next-visit-copy">
+        <span class="eyebrow">NEXT VISIT</span>
+        <strong id="nextVisitTitle"></strong>
+        <span id="nextVisitMeta"></span>
+      </div>
+      <div class="next-visit-actions">
+        <button id="nextVisitOpenButton" class="secondary-button" type="button">Open</button>
+        <button id="nextVisitActionButton" class="primary-button" type="button">Start</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="stopsTitle">
+      <div class="section-heading">
+        <div>
+          <h2 id="stopsTitle">Stops</h2>
+          <span id="stopCount" class="quiet-label">0 / 50</span>
+        </div>
+        <div class="heading-actions">
+          <button id="clearCompletedButton" class="text-button" type="button">Remove finished</button>
+          <button id="clearButton" class="text-button danger" type="button">Clear</button>
+        </div>
+      </div>
+      <ol id="stopList" class="stop-list"></ol>
+      <div id="emptyState" class="empty-state">
+        <div class="empty-pin" aria-hidden="true">●</div>
+        <h3>No stops yet</h3>
+        <p>Add places from Google Maps or import a CSV.</p>
+      </div>
+    </section>
+
+    <section class="actions" aria-label="Route actions">
+      <button id="openRouteButton" class="primary-button wide" type="button">Open route in Google Maps</button>
+      <div class="action-row">
+        <button id="optimizeButton" class="secondary-button" type="button">Optimize</button>
+        <button id="reverseButton" class="secondary-button" type="button">Reverse pending</button>
+      </div>
+      <div class="action-row">
+        <button id="exportButton" class="secondary-button" type="button">Export CSV</button>
+        <button id="backupButton" class="secondary-button" type="button">Backup all</button>
+      </div>
+      <button id="importButton" class="secondary-button" type="button">Import CSV or RouteMate JSON</button>
+      <input id="importFile" type="file" accept="application/json,text/csv,.json,.csv" hidden>
+    </section>
+
+    <p class="privacy-note">No account · No tracking · Route data stays in this browser</p>
+  </main>
+
+  <template id="stopTemplate">
+    <li class="stop-card" draggable="true">
+      <div class="stop-state">
+        <span class="stop-index"></span>
+        <input class="stop-done" type="checkbox" aria-label="Mark stop completed">
+      </div>
+      <div class="stop-content">
+        <div class="stop-title-row">
+          <input class="stop-name" aria-label="Stop name" maxlength="160">
+          <span class="stop-time-badge"></span>
+        </div>
+        <p class="stop-address"></p>
+        <div class="stop-meta">
+          <label>
+            Status
+            <select class="stop-status" aria-label="Visit status">
+              <option value="pending">To do</option>
+              <option value="in_progress">In progress</option>
+              <option value="done">Done</option>
+              <option value="skipped">Skipped</option>
+            </select>
+          </label>
+          <label>
+            Priority
+            <select class="stop-priority" aria-label="Priority">
+              <option value="normal">Normal</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </label>
+          <label>
+            Visit, min
+            <input class="stop-duration" type="number" min="0" max="480" step="5" inputmode="numeric" aria-label="Service duration in minutes">
+          </label>
+        </div>
+        <details class="job-details">
+          <summary>Visit details</summary>
+          <div class="details-grid">
+            <label>
+              Task type
+              <input class="stop-task-type" maxlength="80" placeholder="Inspection, repair…">
+            </label>
+            <label>
+              Contact
+              <input class="stop-contact-name" maxlength="100" placeholder="Customer name">
+            </label>
+            <label class="details-wide">
+              Phone
+              <input class="stop-contact-phone" type="tel" maxlength="60" placeholder="+49…">
+            </label>
+            <label>
+              Window from
+              <input class="stop-window-start" type="time">
+            </label>
+            <label>
+              Window until
+              <input class="stop-window-end" type="time">
+            </label>
+          </div>
+        </details>
+        <textarea class="stop-note" aria-label="Note" maxlength="500" rows="1" placeholder="Job details, phone, access note…"></textarea>
+      </div>
+      <div class="stop-controls">
+        <button class="icon-button open-stop" title="Open place" aria-label="Open place in Google Maps">↗</button>
+        <button class="icon-button move-up" title="Move up" aria-label="Move stop up">↑</button>
+        <button class="icon-button move-down" title="Move down" aria-label="Move stop down">↓</button>
+        <button class="icon-button remove-stop" title="Remove" aria-label="Remove stop">×</button>
+      </div>
+    </li>
+  </template>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
